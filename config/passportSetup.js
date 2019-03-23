@@ -9,7 +9,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   User.findById(id).then((user) => {
-    done(null, user.id);
+    done(null, user);
   })
 });
 
@@ -28,7 +28,8 @@ passport.use(new GoogleStrategy({
       } else {
         new User({
           userName: profile.displayName,
-          googleId: profile.id
+          googleId: profile.id,
+          image:profile.photos[0].value
         }).save().then((data) => {
           console.log(`${data.userName} saved to the database`);
           done(null, data);
